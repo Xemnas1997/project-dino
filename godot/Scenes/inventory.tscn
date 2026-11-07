@@ -26,27 +26,27 @@ custom_minimum_size = Vector2(0, 600)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control3" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=627471935]
+[node name="MarginLeft" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=627471935]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=1304359679]
+[node name="RearrageZone" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=1304359679]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0.23632813, 0.23632813, 1)
 
-[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1730631940]
+[node name="MarginMiddle" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1730631940]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button2" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=505255161]
+[node name="InventoryZone" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=505255161]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0.27330017, 0.26757813, 1, 1)
 
-[node name="Control4" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1330134981]
+[node name="MarginRight" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1330134981]
 layout_mode = 2
 size_flags_horizontal = 3
 

@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://b7b2tphrnqx24"]
 
+[ext_resource type="Script" uid="uid://bg4x7dbhic0v3" path="res://Scripts/inventory_grid.gd" id="1_wdn4f"]
+
 [node name="Inventory" type="Control" unique_id=1801302203]
 layout_mode = 3
 anchors_preset = 15
@@ -31,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="RearrageZone" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=1304359679]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0.23632813, 0.23632813, 1)
@@ -41,10 +43,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="InventoryZone" type="ColorRect" parent="VBoxContainer/HBoxContainer" unique_id=505255161]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0.27330017, 0.26757813, 1, 1)
+
+[node name="InventoryGrid" type="Control" parent="VBoxContainer/HBoxContainer/InventoryZone" unique_id=1396134397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wdn4f")
+cell_size = 64
 
 [node name="MarginRight" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1330134981]
 layout_mode = 2
@@ -54,3 +66,5 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[connection signal="resized" from="VBoxContainer/HBoxContainer/InventoryZone/InventoryGrid" to="VBoxContainer/HBoxContainer/InventoryZone/InventoryGrid" method="_on_resized"]

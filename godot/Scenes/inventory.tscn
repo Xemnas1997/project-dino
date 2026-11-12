@@ -56,7 +56,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wdn4f")
-cell_size = 64
+cell_size = 120
 
 [node name="MarginRight" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1330134981]
 layout_mode = 2

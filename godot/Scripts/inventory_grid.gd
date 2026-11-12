@@ -3,8 +3,15 @@ extends Control
 
 ## Script for manage and drawing inventory grid
 
-@export var cell_size : int
-var grid_start_point : Vector2 = Vector2.ZERO
+@export var cell_size: int
+var grid_start_point: Vector2 = Vector2.ZERO
+
+var gridData: GridData = GridData.new()
+var grid_initialized: bool = false
+
+
+func _ready() -> void:
+	pass
 
 
 #Calculate the correct grid's cell quantity
@@ -67,11 +74,23 @@ func drawing_grid() -> void:
 func _draw() -> void:
 	drawing_grid()
 
+
 #Signal emitted when control node change size
 func _on_resized() -> void:
-	if size.x == 0 or size.y == 0:
+	#In Vector2i x is columns and y is rows
+	var grid_size: Vector2i = grid_cell_quantity_calc()
+	
+	if size.x == 0 or size.y == 0: #Size grid control
 		return
-	print(grid_cell_quantity_calc())
-	print(grid_dimension_calc())
-	print(grid_origin_calc())
+		
+	#Initialize grid data manager
+	if not grid_initialized:
+		gridData.initialize_grid(grid_size)
+		
+		grid_initialized = true
+		
+		gridData.set_cell(Vector2i(0, 2), gridData.CellState.EMPTY)
+		
+		gridData.inventory_debug()
+	
 	queue_redraw()

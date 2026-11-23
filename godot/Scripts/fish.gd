@@ -26,6 +26,7 @@ var landing_pending: bool = false #Recording collision with another object
 var occupied_cells: Array[Vector2i] = []
 var footprint: Array[Vector2i] = [Vector2i.ZERO]
 var fish_texture: Texture2D
+var pending_turns := 0 #For rotation
 
 
 func _ready() -> void:
@@ -40,6 +41,7 @@ func _ready() -> void:
 
 #Start falling
 func start_fall() -> void:
+	pending_turns = 0 #Rotation reset
 	freeze = false #Freezing off
 
 
@@ -140,6 +142,19 @@ func get_sprite_outline(image: Image, rect: Rect2i) -> Array[PackedVector2Array]
 
 #Control fish's velocity and movement
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	#Apply requested turns before the fish landing
+	if not freeze and not landing_pending and pending_turns != 0:
+		var clockwise := pending_turns > 0
+		#Rotate the footprint once for each requested quarter-turn
+		for _turn in range(absi(pending_turns)):
+			footprint.assign(get_rotate_footprint(clockwise))
+		
+		#Rotate the body around its own center
+		state.transform = state.transform.rotated_local(pending_turns * PI / 2.0)
+	
+	#Clear the request
+	pending_turns = 0
+	
 	var direction := Input.get_axis("ui_left" , "ui_right")
 	state.linear_velocity = Vector2(direction * horizontal_speed, falling_speed)
 
@@ -149,6 +164,16 @@ func _input(event: InputEvent) -> void:
 	#Block input when fish is correctly placed
 	if not occupied_cells.is_empty():
 		return
+	
+	#Rotation fish
+	if not freeze:
+		if event.is_action_pressed("rotate_fish_ccw"):
+			#Anti-clockwise
+			pending_turns -= 1
+		elif event.is_action_pressed("rotate_fish_cw"):
+			#Clockwise
+			pending_turns += 1
+	
 	#Check the input event
 	if not is_dragging:
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
@@ -177,6 +202,27 @@ func get_footprint_bounds(_footprint: Array[Vector2i]) -> Vector2i:
 		max_y = maxi(max_y, cell.y) #Update y
 		
 	return Vector2i(max_x +1, max_y +1)
+
+
+#Get rotated footprint
+func get_rotate_footprint(clockwise: bool) -> Array[Vector2i]:
+	#Create an empty array
+	var cells: Array[Vector2i] = []
+	var bounds := get_footprint_bounds(footprint)
+	
+	for offset in footprint:
+		#If rotation is clockwise
+		if clockwise:
+			var new_x := bounds.y - 1 - offset.y
+			var new_y := offset.x
+			cells.append(Vector2i(new_x,new_y))
+			#If rotation is anti-clockwise
+		else:
+			var new_x := offset.y
+			var new_y := bounds.x -1 - offset.x
+			cells.append(Vector2i(new_x,new_y))
+			
+	return cells
 
 
 #Get anchor for fish (up-left cell)
